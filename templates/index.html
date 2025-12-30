@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>English Grammar Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>English Grammar Checker</h2>
+
+    <form method="POST">
+        <textarea name="text" placeholder="Type your sentence here..." required></textarea>
+        <button type="submit">Check Grammar</button>
+    </form>
+
+    {% if corrected_text %}
+        <div class="result">
+            <h3>Corrected Sentence</h3>
+            <p>{{ corrected_text }}</p>
+
+            <h3>Explanation</h3>
+            <pre>{{ explanation }}</pre>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
