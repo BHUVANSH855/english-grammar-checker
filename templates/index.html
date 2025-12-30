@@ -2,38 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>English Grammar Checker</title>
+    <title>English Grammar Checker (AI)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <div class="container">
-    <h2>English Grammar Checker</h2>
+    <h2>AI-Based English Grammar Checker</h2>
 
-    <form method="POST">
-        <textarea name="text" rows="6" cols="60" placeholder="Enter text here...">{{ original_text }}</textarea>
+    <form method="POST" onsubmit="syncText()">
+        <div id="editor"
+             class="editor"
+             contenteditable="true"
+             placeholder="Enter your text...">
+            {% if highlighted_text %}
+                {{ highlighted_text | safe }}
+            {% else %}
+                {{ original_text }}
+            {% endif %}
+
+        </div>
+        <input type="hidden" name="text" id="hiddenText">
         <br><br>
-        <button type="submit">Check Grammar</button>
+        <button type="submit">Check</button>
+        <button type="button" class="clear-btn" onclick="window.location.href='/'">
+            Clear Text
+        </button>
+        <p style="font-size:13px;color:gray;text-align:center;">
+            🤖 AI is analyzing grammar patterns and generating corrections...
+        </p>
     </form>
+    {% if score is defined %}
+        <div class="score-box">
+            Grammar Accuracy: <b>{{ score }}%</b>
+        </div>
+    {% endif %}
 
-    {% if error %}
-        <p style="color: red; font-weight: bold;">{{ error }}</p>
+    {% if highlighted_text %}
+        <h3 class="section-title">Highlighted Errors</h3>
+        <div class="highlight-box">
+            {{ highlighted_text | safe }}
+        </div>
     {% endif %}
 
     {% if corrected_text %}
-        <h3>Corrected Text</h3>
-        <p>{{ corrected_text }}</p>
+        <h3 class="section-title">Corrected Output</h3>
+        <p><strong>{{ corrected_text }}</strong></p>
     {% endif %}
 
-    {% if explanations %}
-        <h3>Explanations</h3>
-        <ul>
-            {% for e in explanations %}
-                <li>{{ e }}</li>
+    {% if errors %}
+        <h3 class="section-title">AI Grammar Insights</h3>
+
+        <div class="error-container">
+            {% for e in errors %}
+            <div class="error-card">
+                <div class="error-line">
+                    <span class="label error">❌ Error</span>
+                    <span class="text">"{{ e.issue }}"</span>
+                </div>
+            
+                <div class="error-line">
+                    <span class="label correction">✔️ Correction</span>
+                    <span class="text">{{ e.correction }}</span>
+                </div>
+            
+                <div class="error-line">
+                    <span class="label reason">📌 Reason</span>
+                    <span class="text">{{ e.message }}</span>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 </div>
+<hr style="margin-top:30px;">
 
+<div class="ai-info">
+    <h4>About This AI Grammar Checker</h4>
+    <p>
+        This project is an <b>AI-inspired Grammar Correction System</b> that
+        analyzes user input using Natural Language Processing (NLP) rules.
+        It detects grammatical patterns, generates corrections, and explains
+        errors in a human-readable way similar to prompt-based Generative AI models.
+    </p>
+    <p>
+        The system simulates how AI models respond to text prompts by:
+    </p>
+
+    <ul>
+        <li>Identifying grammatical mistakes</li>
+        <li>Generating corrected text</li>
+        <li>Providing contextual explanations</li>
+        <li>Calculating grammar accuracy</li>
+    </ul>
+</div>
+<script>
+function syncText() {
+    document.getElementById("hiddenText").value =
+        document.getElementById("editor").innerText;
+}
+</script>
 </body>
 </html>
