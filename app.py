@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request
 import language_tool_python
-
 app = Flask(__name__)
-
 tool = language_tool_python.LanguageTool('en-US')
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     corrected_text = ""
@@ -30,3 +27,6 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
