@@ -7,7 +7,6 @@ def grammar_ai(text):
     errors = []
     seen_issues = set()
     corrected = text
-
     rules = [
         (r"\bi\b", "I", "Pronoun 'I' must always be capitalized"),
         (r"(^|\.\s+)([a-z])",
