@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import re
 
 app = Flask(__name__)
-
 def grammar_ai(text):
     errors = []
     seen_issues = set()
